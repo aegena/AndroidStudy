@@ -1,0 +1,76 @@
+def module_iml_path = rootDir.absolutePath + File.separator + "module.iml"
+def module_iml_file = file(module_iml_path)
+if (!module_iml_file.exists()) {
+    println("module.iml 文件不存在")
+    return
+}
+def trim_liens = []
+module_iml_file.eachLine { line ->
+    def trim_line = line.trim()
+    if (trim_line.length() > 0 && !trim_line.startsWith("#") && trim_line.contains("=")) {
+        trim_liens.add(trim_line)
+    }
+}
+println('''
+module的名字可以自己定义，根据自身情况修改，默认是以 
+group:name中的name命名，如果有其他的需求可以
+根据自身的项目调整脚本以及配置
+''')
+def modules = [:]
+for (def line : trim_liens) {
+    def args = line.split("=")
+    if (args == null || args.length != 2) {
+        println("$line,配置错误")
+        continue
+    }
+    args[0] = args[0].trim()
+    args[1] = args[1].trim()
+
+    def module = args[0].split(":")
+    if (module == null || args.length != 2) {
+        println("$line, 配置错误")
+        continue
+    }
+    if (modules.containsKey(args[0])) {
+        throw RuntimeException("$line,配置重复")
+    }
+    modules.put(args[0], args[1])
+
+    include ":${args[0]}"
+    project(":${args[0]}").projectDir = file(args[1])
+}
+
+if (modules != null && modules.size() > 0) {
+    def module_log_file_name = "_temp_module_log_.log"
+    def git_ignore = rootDir.absolutePath + File.separator + ".gitignore"
+    def git_ignore_file = file(git_ignore)
+    if (git_ignore_file.exists()) {
+        def need_append_ignore = true
+        def ignore_lines = []
+        git_ignore_file.eachLine { line ->
+            ignore_lines.add(line)
+        }
+        for (def line : ignore_lines) {
+            if (line == module_log_file_name || line == "${File.separator}$module_log_file_name") {
+                need_append_ignore = false
+                break
+            }
+        }
+        if (need_append_ignore && git_ignore_file.canWrite()) {
+            git_ignore_file.append("${File.separator}$module_log_file_name")
+        }
+    }
+    def module_log_file_path = rootDir.absolutePath + File.separator + module_log_file_name
+    def module_log_file = file(module_log_file_path)
+    if (module_log_file.exists()) {
+        module_log_file.delete()
+    }
+    module_log_file.createNewFile()
+    modules.forEach((k, v) -> {
+        module_log_file.append("$k=$v")
+    })
+}
+
+
+
+
