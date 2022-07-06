@@ -11,6 +11,30 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <com.campanula.study.components.InitialTextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:text="InitialTextView" />
+
+        <com.campanula.study.components.InitialView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@android:color/black"
+            android:padding="20dp" />
+
+        <com.campanula.study.components.ComposeToolBar
+            android:id="@+id/composeToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btn_view_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="btn view group" />
 
     </LinearLayout>
 
