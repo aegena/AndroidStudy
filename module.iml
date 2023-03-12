@@ -1,0 +1,6 @@
+# 这是一个动态调整依赖本地非当前项目module模块的声明文件，目前仅支持MacOS
+# 使用 '#' 开头的依赖声明不会被引用，使用 '=' 作为分割，一个完整的配置一行
+# group:name = module_path, eg:androidx.annotation:annotation = /rootDir/ProjectDir/moduleDir
+# 请阅读上述说明
+
+#androidx.annotation:annotation = /Users/maweidong/AndroidStudioProjects/MyApplication/mylibrary

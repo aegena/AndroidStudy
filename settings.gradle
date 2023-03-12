@@ -14,3 +14,12 @@ dependencyResolutionManagement {
 }
 rootProject.name = "AndroidStudy"
 include ':app'
+
+def module = rootDir.absolutePath + File.separator + "module.gradle"
+def module_iml = rootDir.absolutePath + File.separator + "module.iml"
+println("module:$module\nmodule_iml:$module_iml")
+if (file(module).exists() && file(module_iml).exists()) {
+    apply from: module
+} else {
+    println("module.gradle/module.iml 文件不存在")
+}

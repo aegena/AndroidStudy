@@ -1,0 +1,28 @@
+println("apply from: dynamic_dependence[${rootDir.absolutePath}${File.separator}buildSrc${File.separator}dynamic_dependence.gradle]")
+
+def read_modules() {
+    def module_log_file_name = "_temp_module_log_.log"
+    def module_log_file_path = getRootDir().absolutePath + File.separator + module_log_file_name
+    def module_log_file = file(module_log_file_path)
+    def modules = [:]
+    if (module_log_file.exists()) {
+        module_log_file.eachLine { line ->
+            def args = line.split("=")
+            modules.put(args[0], args[1])
+        }
+    }
+    return modules
+}
+
+def dynamic(def dependence, def modules) {
+    if (dependence == null || dependence.length() == 0 || !dependence.contains(":")) return ""
+    def module = dependence.split(":")
+    if (module == null || module.length != 3) return dependence
+    def group_name = "${module[0]}:${module[1]}"
+    println("依赖:$dependence, 被替换为:project(:$group_name), target:${module[group_name]}")
+    return project(":${group_name}")
+}
+
+
+
+
