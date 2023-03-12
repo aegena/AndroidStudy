@@ -14,6 +14,7 @@ dependencyResolutionManagement {
 }
 rootProject.name = "AndroidStudy"
 include ':app'
+include ':Proto3'
 
 def module = rootDir.absolutePath + File.separator + "module.gradle"
 def module_iml = rootDir.absolutePath + File.separator + "module.iml"
